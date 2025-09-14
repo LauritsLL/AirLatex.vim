@@ -1,6 +1,6 @@
 # AirLatex.vim
 
-This is a fork of [da-h/AirLatex.vim](//github.com/da-h/AirLatex.vim) providing comments, track changes, and some code organization for a vim Websocket Client for Overleaf.
+This is a fork of [da-h/AirLatex.vim](//github.com/da-h/AirLatex.vim) and has been forked again from [dmadisetti/AirLatex.vim](//github.com/dmadisetti/AirLatex.vim) providing comments, track changes, and some code organization for a vim Websocket Client for Overleaf. It has then been made compatible with neovim by fixing some bugs where it in vim writes to buffers that in Neovim has become unreadable by default.
 As is, this is customized to my workflow- with no added hooks for broader customization. If you'd like to add some, please create a PR- as this is a won't fix for me.
 
 **Current State**: Use at your own risk.
