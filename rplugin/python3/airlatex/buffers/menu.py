@@ -34,21 +34,32 @@ class MenuBuffer(Buffer):
       self.lock.release()
 
   def write(self):
-    for i, ((line, _), (prev, _)) in enumerate(zip(self.menu.entries,
-                                                   self.menu.previous)):
-      if line != prev:
-        break
+      # Temporarily make buffer modifiable
+      buf = self.buffer
+      was_modifiable = buf.options['modifiable']
+      buf.options['modifiable'] = True
 
-    l = len(self.buffer)
-    for line, _ in self.menu.entries[i:]:
-      line = line.rstrip()
-      if i < l:
-        self.buffer[i] = line
-      else:
-        self.buffer.append(line)
-      i += 1
-    self.log.debug(f"cleared")
-    self.buffer[i:] = []
+      try:
+          for i, ((line, _), (prev, _)) in enumerate(zip(self.menu.entries,
+                                                         self.menu.previous)):
+              if line != prev:
+                  break
+
+          l = len(buf)
+          for line, _ in self.menu.entries[i:]:
+              line = line.rstrip()
+              if i < l:
+                  buf[i] = line
+              else:
+                  buf.append(line)
+              i += 1
+          self.log.debug(f"cleared")
+          buf[i:] = []
+
+      finally:
+          # Restore original modifiable state
+          buf.options['modifiable'] = was_modifiable
+
 
   def render(self, *args, **kwargs):
     Task(self.triggerRefresh)
